@@ -1,25 +1,14 @@
 pipeline {
-    agent any
-    stages {
-        
-        stage("Clone Repo"){
+    agent any 
+    stages{
+        stage("Demo"){
             steps {
-                sh "git clone https://github.com/jenkins-docs/simple-java-maven-app.git"
-            }
-        }
-        stage("Build"){
-            steps {
-                dir("simple-java-maven-app") {
-                    sh "mvn clean install"
-                }
-            }
-        }
-        stage("Test"){
-            steps {
-                dir("simple-java-maven-app") {
-                    sh "mvn test"
-                }
+                myFunc("Hello from the demo stage!")
             }
         }
     }
+}
+
+def myFunc(String myText) {
+    echo "myText is set to: ${myText}"
 }
