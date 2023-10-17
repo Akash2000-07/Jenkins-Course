@@ -1,14 +1,35 @@
 pipeline {
-    agent any 
-    stages{
-        stage("Demo"){
+    agent {
+        docker {
+            image 'maven:3.9.0'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    stages {
+        stage('Build') {
             steps {
-                myFunc("Hello from the demo stage!")
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+            }
+        }
+       stage('Deliver') {
+            steps{
+                echo 'complete the job'
             }
         }
     }
-}
-
-def myFunc(String myText) {
-    echo "myText is set to: ${myText}"
 }
