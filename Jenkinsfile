@@ -1,30 +1,24 @@
 pipeline {
     agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('Deliver') {
-            steps {
-                sh './jenkins/scripts/deliver.sh'
-            }
-        }
-       stage('Deliver') {
-            steps{
-                echo 'complete the job'
-            }
-        }
+
+    parameters {
+        booleanParam(defaultValue: false, description: "Enable service?", name: "myBoolean")
     }
+
+    stages {
+        stage("Demo"){
+            steps {
+                script{
+                    if (param.myBoolean == false){
+                        currentBuild.result = "SUCCESS"
+                        return
+                    }
+                    else {
+                           echo "booleanParam is set to =TRUE"
+                    }
+                }
+                
+            }
+        }
+    }   
 }
