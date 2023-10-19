@@ -9,7 +9,7 @@ pipeline {
         stage("Demo"){
             steps {
                 script{
-                    if (param.myBoolean == false){
+                    if (param.myBoolean == true){
                         currentBuild.result = "SUCCESS"
                         return
                     }
